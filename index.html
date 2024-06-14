@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Recebe cURL e Envia HTTP Request</title>
+</head>
+<body>
+    <script>
+        // Função para extrair parâmetros da URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                chave: params.get('chave'),
+                valor: params.get('valor')
+            };
+        }
+
+        // Extrai os dados recebidos
+        const { chave, valor } = getQueryParams();
+
+        if (chave && valor) {
+            // URL do site para o qual o HTTP request será enviado
+            const url = 'http://192.168.15.4:45267/';
+
+            // Dados a serem enviados
+            const data = {
+                chave: chave,
+                valor: valor
+            };
+
+            // Faz a requisição HTTP usando Fetch API
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta recebida:', data);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+        } else {
+            console.error('Dados não recebidos corretamente.');
+        }
+    </script>
+</body>
+</html>
